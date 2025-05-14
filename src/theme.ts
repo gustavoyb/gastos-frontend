@@ -3,11 +3,10 @@ import { theme } from '@primer/react'
 export const customTheme = {
     ...theme,
     colorSchemes: {
-        ...theme.colorSchemes,
-        // Puedes personalizar los colores aquí
+        light: theme.colorSchemes?.light || {},
+        dark: theme.colorSchemes?.dark || {}
     },
     fonts: {
-        ...theme.fonts,
-        // Puedes personalizar las fuentes aquí
-    },
-} 
+        ...theme.fonts
+    }
+}
