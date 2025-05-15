@@ -1,12 +1,13 @@
 'use client';
 
 import { Box, Heading, Text, Button } from '@primer/react'
-import { useAuth } from '@/context/AuthContext'
+import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import type { RootState } from '@/store/store'
 
 export default function Home() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth)
   const router = useRouter()
 
   useEffect(() => {

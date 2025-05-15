@@ -3,7 +3,7 @@ import { customTheme } from '@/theme'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { AuthProvider } from '@/context/AuthContext'
+import { ReduxProvider } from '@/components/providers/ReduxProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,11 +20,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={inter.className}>
-        <AuthProvider>
+        <ReduxProvider>
           <ThemeProvider theme={customTheme}>
             {children}
           </ThemeProvider>
-        </AuthProvider>
+        </ReduxProvider>
       </body>
     </html>
   )

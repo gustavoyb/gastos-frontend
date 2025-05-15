@@ -2,22 +2,23 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '@/store/slices/authSlice';
+import type { RootState } from '@/store/store';
 
 export default function LoginForm() {
     const router = useRouter();
-    const { login } = useAuth();
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state: RootState) => state.auth);
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
-        setLoading(true);
+        dispatch(loginStart());
 
         try {
             const response = await fetch('http://localhost:3000/users/login', {
@@ -34,15 +35,10 @@ export default function LoginForm() {
                 throw new Error(data.message || 'Error al iniciar sesión');
             }
 
-            // Usar el contexto de autenticación para guardar los datos
-            login(data.access_token, data.user);
-
-            // Redirigir al dashboard
+            dispatch(loginSuccess({ user: data.user, token: data.access_token }));
             router.push('/dashboard');
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
-        } finally {
-            setLoading(false);
+            dispatch(loginFailure(err instanceof Error ? err.message : 'Error al iniciar sesión'));
         }
     };
 
